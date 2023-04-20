@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <script>
+        const body=document.querySelector('body');
+        const container=document.createElement('div');
+        const main=document.createElement('div');
+        const title=document.createElement('h3');
+        const sideMenu=document.createElement('div');
+        const resetBtn=document.createElement("button");
+        const gridBtn=document.createElement("button");
+        const colorPicker=document.createElement("input");
+        const gridLine=document.createElement("button");
+        let color="aqua";
+        colorPicker.padding="5px"
+        colorPicker.setAttribute('type',"color");
+        colorPicker.setAttribute('value','#00ffff');
+        resetBtn.innerText="Reset";
+        title.innerText="Etch A Sketch";
+        title.classList.add("title");
+        const row=60,column=60;
+        main.classList.add("main");
+        sideMenu.classList.add("sideMenu");
+        container.classList.add("container");
+
+        generateGrid(row);
+
+        console.log(colorPicker)
+        
+        body.appendChild(title);
+        body.appendChild(main);
+        main.appendChild(sideMenu);
+        sideMenu.appendChild(resetBtn);
+        sideMenu.appendChild(gridBtn);
+        sideMenu.appendChild(colorPicker);
+        sideMenu.appendChild(gridLine);
+        main.appendChild(container);
+
+        gridLine.innerText="Gridline";
+        gridLine.addEventListener("click",()=>{
+            gridLine.classList.toggle("gridline-toggle");
+            let children=document.querySelectorAll(".child");
+            children.forEach(child=>child.classList.toggle("child-gridline"))
+        })
+
+
+
+        colorPicker.addEventListener("input",changeColor);
+
+        resetBtn.addEventListener("click",removeEffect);
+
+        gridBtn.innerText="Grid";
+        gridBtn.addEventListener("click",()=>{
+            let grid=prompt("How many grids do you want?");
+            while(isNaN(grid)||grid>100||grid<1){
+                if(isNaN(grid))grid=prompt("You can input only number for grid!");
+                else  grid=prompt("Grid size is limited between 1 and 100");
+
+            }
+            gridBtn.innerText="Grid: "+grid;
+            generateGrid(grid);
+        })
+
+        function changeColor(e){
+            color=this.value;
+        }
+
+        function generateGrid(grid){
+            container.innerHTML="";
+            for(let i=0;i<grid;i++){
+                let row=document.createElement('div');
+                row.classList.add("row");
+                for(let j=0;j<grid;j++){
+                    let div=document.createElement('div');
+                    div.classList.add("child");
+                    div.addEventListener("mouseover",hovereffect);
+                    row.appendChild(div);
+                }
+                container.appendChild(row);
+            }
+            console.log(container)
+        }
+
+        function removeEffect(){
+            console.log("clickec")
+            let children=document.querySelectorAll(".child");
+            children.forEach(child=>{
+                child.style.backgroundColor="grey";
+                //child.classList.remove("hover-effect");
+            }) ;
+        }
+
+        function hovereffect(e){
+            this.style.backgroundColor=color;
+            //this.classList.add("hover-effect");
+
+        }
+
+        function appendChildren(parent,children){
+            children.forEach(child=>{
+                parent.appendChild(child);
+            })
+        }
+
+    </script>
+</body>
+</html>
